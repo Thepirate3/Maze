@@ -1,0 +1,66 @@
+
+	Mocanu Alexandru George
+	325 CB
+
+	Solutia oferita este alcatuita din doua parti:
+- rezolvare fara utilizarea hartii in mod direct 
+- rezolvare prin gasirea drumului minimal pe harta
+
+
+	1. Rezolvare fara intermediul hartii
+
+ Rezolvarea acestui task este propusa prin clasa NoMap ce contine metoda statica searchExit ce returneaza o lista de pozitii pe unde merge eroul in drumul sau spre iesire. Astfel metoda modifica fiecare casuta curenta pe care este eroul cu o litera (N,E,S,W), corespunzatoare directiilor cardinale, modificarea fiind facuta in functie de miscarea eroului fata de ultima pozitie. 
+Exemplu:
+
+Eroul se afla pe I initial orientat in sus
+Apoi se muta la dreapta deci acesta va fi orientat spre est.
+I*  ---->  	N* --->	NE 
+*O		   	*O		*O
+
+ Apoi pentru alegerea urmatoarei celul selectioneaz celule candidat si anume daca se afla in labirint sau daca sunt celule goale atunci voi alege celula vecin drept candidat. Maxim voi avea 4 celule drept candidati.
+ Apoi apelez metoda check ce imi alege in functie de numarul de vizite si apoi de directia in care sunt orientat urmatoarea celula pe care o voi vizita si imi returneaza pozitia acesteia.
+ Dupa ce mi-am ales urmatoarea celula o adaug in lista de pozitii vizitate si imi continui drumul.
+
+
+	2. Cautarea drumul minim avand harta la dispozitie
+
+ Pentru acest task in implementarea regasita in clasa MapSolution, metoda search exit, am utilizat doua liste ajutatoare.Prima pentru a memora fiecare vecin viabil al fiecarei celule disponibile si o lista in care pastrez pentru fiecare nod ,nodul adiacent de la care am venit.
+De exemplu am lista trace si adjiacent si urmatorul labirint pe care il translatam in cifre pentru a intelege mai usor functionarea metodei.
+
+..#I.			1  2  I 17 18
+#.##. ----->	#  3  #  # 19
+.....			4  5  6  7  8
+O#.#.			9  # 10  # 11
+.....		   12 13 14 15 16
+
+Deci parcurgerea labirintului se va face dupa cum urmeaza:
+
+index- pozitia din trace a vecinului de unde am venit
+1.
+trace:		I	17
+adjiacent:	0	0
+
+2.
+
+trace:		I	17 18
+adjiacent:	0	0	1
+
+3.
+
+trace:		I	17 18 19
+adjiacent:	0	0	1  2
+
+3.
+
+trace:		I	17 18 19 8 
+adjiacent:	0	0	1  2 3
+
+Si voi continua pana cand portalul va fi introdus in trace.
+Listele finale vor fi(prima pozitiile pe unde am trecut iar a doua indicii parintilor de unde am venit in lista adjiacent).
+
+trace:		I	17 18 19 8 7 11 6 16 5 10 15 3 4 14 2  9 
+adjiacent:	0	0	1  2 3 4  4 5  6 7  7  8 9 9 10 11 13
+
+Astfel dupa ce am gasit portalul ma voi intoarce reconstituinde drumul din parinte in parinte obtinand astfel drumul minim posibil.
+
+
